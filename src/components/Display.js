@@ -11,7 +11,9 @@ const Display = (props) => {
 
     const { displayFunc } = props;
     const handleClick = () => {
-        fetchShow().then(data => {
+        console.log("I'm the handler")
+        fetchShow()
+        .then(data => {
             setShow(data);
 
             if (displayFunc) {

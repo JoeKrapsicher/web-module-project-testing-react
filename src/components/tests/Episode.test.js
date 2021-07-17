@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { rerender, userEvent, render, screen } from '@testing-library/react';
 import Episode from './../Episode';
 
 const testEpisode = {
@@ -13,19 +13,48 @@ const testEpisode = {
 }
 
 const testEpisodeWithoutImage = {
-    //Add in approprate test data structure here.
+    id:1,
+    name: "",
+    image: "",
+    season: 1,
+    number: 1,
+    summary: "",
+    runtime: 1
 }
 
 test("renders without error", () => {
+    //Arange: render the component and get access to the form elemnts from DOM
+    render(<Episode />)
+    
+    // const text = screen.findByText(/episode 1/i);
+    // const button = screen.getByRole('button', {name: /Press to Get Show Data/i})
+    // const dropDown = screen.findAllByRole('select', {name:/Season 1/i})
+    // //Act
+    // userEvent.click(button)
+    // userEvent.click(dropDown)
+
+
+    //Assert
+    // expect(text).toBeInTheDocument;
 
 });
 
 test("renders the summury test passed as prop", ()=>{
-    
+    render(<Episode summary={'LONG LONG SUMMARAY'}/>)
+
+    const text = screen.findByText(/long long summaray/i);
+
+    expect(text).toBeTruthy(/Long lOng SuMmaray/i)
+
+
 });
 
 test("renders default image when image is not defined", ()=>{
-    
+    render(<Episode image={''}/>)
+
+    const img = screen.findByText('stranger');
+
+    expect(img).toBeVisible
 })
 
 //Tasks

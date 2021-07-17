@@ -1,26 +1,72 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { rerender, fireEvent, getAllByTestId, getByText, render, screen } from '@testing-library/react';
+import uuid from "uuid"
 import userEvent from '@testing-library/user-event';
 
 import Show from './../Show';
+import { resetRetrieveHandlers } from 'source-map-support';
 
-const testShow = {
+//mock data
+const testShow = [
     //add in approprate test data structure here.
-}
+    {id:0, name: "Season 1", episodes: []}, 
+    {id:1, name: "Season 2", episodes: []}, 
+    {id:2, name: "Season 3", episodes: []}, 
+    {id:3, name: "Season 4", episodes: []}
+]
+
 
 test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show={testShow} />)
 });
 
 test('renders Loading component when prop show is null', () => {
+    render(<Show show={null}/>)
+
+    const loading = screen.getByText('Fetching data...')
+
+    expect(loading).toBeVisible();
+
 });
 
 test('renders same number of options seasons are passed in', ()=>{
+    render(<Show show={testShow}/>)
+
+    
+    const numSeasons = testShow.length();
+    const sameSeasons = screen.getAllByText(/season/i).length();
+
+    expect(getAllByTestId(numSeasons)).toHaveLength(4);
+    expect(getAllByTestId(sameSeasons)).toHaveLength(4);
+
+    expect(sameSeasons).toBeGreaterThanOrEqual(numSeasons);
 });
 
 test('handleSelect is called when an season is selected', () => {
+    render(<Show show={testShow}/>)
+
+    const getHandlerData = jest.fn(()=> {"Hi this is the handler"})
+
+    const season = screen.getByText(/season 1/i)
+
+
+    userEvent.click(season)
+    
+    expect(getHandlerData).toHaveBeenCalled();
+
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    render(<Show show={testShow}/>)
+    const season = screen.getByText(/season/i)
+    const button = screen.getByRole('select', {name:/season/i})
+
+    fireEvent.click(button);
+
+    expect(season).toBeTruthy();
+
+    rerender(<Show show={testShow}/>)
+    
 });
 
 //Tasks:
