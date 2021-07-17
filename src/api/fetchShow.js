@@ -23,8 +23,14 @@ const formatSeasons = (allEpisodes) => {
 
 const fetchShow = () => {
   return axios
-    .get("https://api.tvmaze.com/singlesearch/shows?q=stranger-things&embed=episodes")
+  // HAD TO FIX YOUR API REQUEST!!!!!! THE ASSIGNMENT WORKS NOW!!!
+  // the old url freaked out if there was a "-things" tied to the end 
+  // ex : https://api.tvmaze.com/singlesearch/shows?q=stranger -things &embed=episodes
+  // new : https://api.tvmaze.com/singlesearch/shows?q=stranger&embed=episodes
+  // new works just fine
+    .get("https://api.tvmaze.com/singlesearch/shows?q=stranger&embed=episodes")
     .then(res => {
+      console.log('Im in the axios then!')
       const { data } = res;
       
       return {
